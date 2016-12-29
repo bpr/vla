@@ -22,7 +22,7 @@ proc `[]=`*[T](a: VarLengthArray[T], i: int, x: T) =
 proc len*[T](a: VarLengthArray[T]): int =
   a.len
 
-template newVLA*(T: typedesc, n: int): expr =
+template newVLA*(T: typedesc, n: int): untyped =
   let bytes = 2 * sizeof(int) + sizeof(T)*n
   var vla = cast[VarLengthArray[T]](alloca(bytes))
   c_memset(vla, 0, bytes)

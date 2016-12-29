@@ -5,13 +5,6 @@ let
 
 var count = 0
 
-proc test_oa_foo(n : int, a: openarray[char]) = 
-  write(stdout, n)
-  write(stdout, ": ")
-  for i in 0..len(a)-1:
-     write(stdout, a[i])
-  write(stdout, "\n")
-
 proc test_oa(n : int, a: openarray[char]) = 
   count += len(a)
 
@@ -42,3 +35,15 @@ for n in 0..100000:
 var t2 = cpuTime()
 echo("seq time = ", (t2 - t1))
 echo("count = ", count)
+
+discard r"""
+proc test_ragged_vla(nrows:int, ncols:int) = 
+  var mat = newVLA(VarLengthArray[int], nrows)
+  for i in countup(0, nrows-1):
+    mat[i] = newVLA(int, ncols)
+  for i in countup(0,nrows-1):
+    for j in countup(0,ncols-1):
+      echo("mat[$i][$j]=", mat[i][j])
+
+test_ragged_vla(8, 4)
+"""
