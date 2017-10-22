@@ -8,14 +8,13 @@ type
   VarLengthArray*[T] =
     ptr object
       len: int
-      reserved: int
       data: UncheckedArray[T]
 
-proc `[]`*[T](a: VarLengthArray[T], i: int): T =
+proc `[]`*[T](a: VarLengthArray[T], i: int): T {.inline.} =
   assert i >= 0 and i < a.len
   result = a.data[i]
 
-proc `[]=`*[T](a: VarLengthArray[T], i: int, x: T) =
+proc `[]=`*[T](a: VarLengthArray[T], i: int, x: T) {.inline.} =
   assert i >= 0 and i < a.len
   a.data[i] = x
 
@@ -23,11 +22,10 @@ proc len*[T](a: VarLengthArray[T]): int =
   a.len
 
 template newVLA*(T: typedesc, n: int): untyped =
-  let bytes = 2 * sizeof(int) + sizeof(T)*n
+  let bytes = sizeof(int) + sizeof(T)*n
   var vla = cast[VarLengthArray[T]](alloca(bytes))
   c_memset(vla, 0, bytes)
   vla.len = n
-  vla.reserved = n
   vla
 
 # Untested code
