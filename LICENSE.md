@@ -1,4 +1,4 @@
-nim-vla: Variable length arrays in Nim
+vla: Variable length arrays in Nim
 
 Copyright (C) 2017 Brian Rogoff. All rights reserved.
 
