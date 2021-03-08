@@ -3,8 +3,6 @@ include system/ansi_c
 proc alloca(n: int): pointer {.importc, header: "<alloca.h>".}
 
 type
-  UncheckedArray{.unchecked.}[T] =
-    array[1, T]
   VarLengthArray*[T] =
     ptr object
       len: int
@@ -24,7 +22,7 @@ proc len*[T](a: VarLengthArray[T]): int =
 template newVLA*(T: typedesc, n: int): untyped =
   let bytes = sizeof(int) + sizeof(T)*n
   var vla = cast[VarLengthArray[T]](alloca(bytes))
-  c_memset(vla, 0, bytes)
+  c_memset(vla, cast[cint](0), cast[csize_t](bytes))
   vla.len = n
   vla
 
