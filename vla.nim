@@ -28,7 +28,7 @@ template newVLA*(T: typedesc, n: int): untyped =
 
 # Untested code
 template asOpenArray*[T](a: VarLengthArray[T]): openarray[T] =
-  cast[seq[type(a[0])]](a)
+  toOpenArray(addr a.data[0],0,a.len)
 
 proc toSeq*[T](a: VarLengthArray[T]): seq[T] =
   result = newSeq[T](len(a))
