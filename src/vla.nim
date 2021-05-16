@@ -1,6 +1,10 @@
 include system/ansi_c
 
-proc alloca(n: int): pointer {.importc, header: "<alloca.h>".}
+when defined(windows):
+  proc alloca(size: int): pointer {.header: "<malloc.h>".}
+else:
+  proc alloca(size: int): pointer {.header: "<alloca.h>".}
+
 
 type
   VarLengthArray*[T] =
@@ -26,9 +30,8 @@ template newVLA*(T: typedesc, n: int): untyped =
   vla.len = n
   vla
 
-# Untested code
 template asOpenArray*[T](a: VarLengthArray[T]): openarray[T] =
-  toOpenArray(addr a.data[0],0,a.len)
+  toOpenArray(addr a.data, 0, a.len)
 
 proc toSeq*[T](a: VarLengthArray[T]): seq[T] =
   result = newSeq[T](len(a))
