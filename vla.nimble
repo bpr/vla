@@ -1,9 +1,11 @@
-[Package]
-name          = "vla"
+# Package
+
 version       = "0.1.0"
 author        = "Brian Rogoff"
 description   = "Variable length arrays for Nim"
 license       = "MIT"
-skipDirs      = @["tests"]
-[Deps]
-Requires: "nim >= 0.10.0"
+srcDir        = "src"
+
+# Dependencies
+
+requires "nim >= 0.10.0"
